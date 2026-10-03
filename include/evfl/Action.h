@@ -21,7 +21,7 @@ ORE_VALUED_ENUM(TriggerType, kFlowchart = 0, kClipEnter = 1, kClipLeave = 2, kOn
 
 class ActionDoneHandler {
 public:
-    ActionDoneHandler() = default;
+    ActionDoneHandler() { m_obj = nullptr; }
     ActionDoneHandler(FlowchartObj* obj, FlowchartContext* context, int node_idx);
     explicit ActionDoneHandler(TimelineObj* obj) : m_is_flowchart(false) { m_timeline_obj = obj; }
     ~ActionDoneHandler() { m_list_node.Erase(); }
@@ -53,6 +53,30 @@ public:
     FlowchartContextNode* GetContextNode();
     void InvokeFromFlowchartImpl();
     void InvokeFromTimelineImpl();
+
+    /// Notifies the flowchart or timeline that the action is done (at most once). The game binary only has
+    /// the *Impl functions out of line; these wrappers are inlined at every call site.
+    void Invoke() {
+        if (m_is_flowchart)
+            InvokeFromFlowchart();
+        else
+            InvokeFromTimeline();
+    }
+
+    void InvokeFromFlowchart() {
+        if (m_context && m_node_idx >= 0 && m_obj && !m_handled) {
+            m_handled = true;
+            InvokeFromFlowchartImpl();
+        }
+    }
+
+    void InvokeFromTimeline() {
+        if (m_timeline_obj && !m_handled) {
+            m_handled = true;
+            InvokeFromTimelineImpl();
+        }
+    }
+
     bool IsWaitingJoin();
     bool CancelWaiting();
 
@@ -75,7 +99,7 @@ private:
     int m_node_idx = -1;
     int m_node_counter = -1;
     union {
-        FlowchartObj* m_obj = nullptr;
+        FlowchartObj* m_obj;
         TimelineObj* m_timeline_obj;
     };
     bool m_handled = false;
