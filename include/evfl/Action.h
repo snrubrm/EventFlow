@@ -80,7 +80,10 @@ public:
     bool IsWaitingJoin();
     bool CancelWaiting();
 
+    /// Unlinks the handler from its context's list and clears it (FlowchartContext::Clear and
+    /// ksys::evt::Action::sub_7100DA7C8C both do the unlink and the clearing as one step).
     void Reset() {
+        m_list_node.Erase();
         m_context = nullptr;
         m_obj = nullptr;
         m_node_idx = -1;

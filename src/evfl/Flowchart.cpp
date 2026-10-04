@@ -131,7 +131,6 @@ void FlowchartContext::Clear() {
 
     while (!m_handlers.Empty()) {
         auto* handler = m_handlers.Front();
-        handler->m_list_node.Erase();
         handler->Reset();
     }
 }
