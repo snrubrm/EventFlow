@@ -26,6 +26,8 @@ public:
     };
 
     TimelineObj();
+    // NON_MATCHING: the binder destructor is inlined here; the original calls its out-of-line copy.
+    ~TimelineObj() { Finalize(); }
 
     void Calc();
     void Reset();

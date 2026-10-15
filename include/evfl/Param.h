@@ -23,6 +23,8 @@ struct ResEntryPoint;
 
 class MetaDataPack {
 public:
+    ~MetaDataPack() { m_entries_num = 0; }
+
     ORE_ENUM(DataType, kInt, kBool, kFloat, kString, kWString)
 
     struct Entry {
