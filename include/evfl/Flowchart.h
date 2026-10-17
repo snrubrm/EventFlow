@@ -158,6 +158,10 @@ public:
     FlowchartContextNode& GetNode(int idx) { return m_nodes[idx]; }
     const FlowchartContextNode& GetNode(int idx) const { return m_nodes[idx]; }
     MetaDataPack* GetMetaDataPack() const { return m_metadata_pack; }
+    /// Index of the flowchart object selected when the context was built (-1 if none).
+    int GetObjIdx() const { return m_obj_idx; }
+    /// Index of the entry point selected when the context was built (-1 if none).
+    int GetActiveEntryPointIdx() const { return m_active_entry_point_idx; }
     /// The number of context nodes that are currently allocated (0 once the flowchart has finished).
     int GetNumAllocatedNodes() const { return m_num_allocated_nodes; }
     ore::Array<FlowchartObj>& GetObjs() { return m_objs; }
