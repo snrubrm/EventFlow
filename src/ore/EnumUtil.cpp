@@ -35,6 +35,8 @@ void detail::EnumUtil::Parse(const IterRange<StringView*>& out, StringView defin
             ++next;
         if (next < length)
             ++next;
+        else
+            next = separator;
         if (next != 0)
             text += next;
         length -= next;
